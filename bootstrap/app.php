@@ -14,5 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // 分异常处理
+//        $exceptions->report(function (InvalidOrderException $e) {
+//            // ...
+//        })->stop();
+//
+//        $exceptions->report(function (InvalidOrderException $e) {
+//            return false;
+//        });
     })->create();

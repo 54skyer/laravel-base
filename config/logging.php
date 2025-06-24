@@ -1,5 +1,6 @@
 <?php
 
+use App\Logging\QueryLogChannel;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -107,6 +108,7 @@ return [
 
         'syslog' => [
             'driver' => 'syslog',
+            'path' => storage_path('logs/syslog.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'facility' => env('LOG_SYSLOG_FACILITY', LOG_USER),
             'replace_placeholders' => true,
@@ -114,6 +116,7 @@ return [
 
         'errorlog' => [
             'driver' => 'errorlog',
+            'path' => storage_path('logs/errorlog.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
         ],
@@ -124,9 +127,22 @@ return [
         ],
 
         'emergency' => [
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/emergency.log'),
         ],
 
+        'database' => [
+            'driver' => 'daily',
+            'path' => storage_path("logs/database/".date("Ym")."/".date("d").".log"),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => env('LOG_DAILY_DAYS', 14),
+            'replace_placeholders' => true,
+        ],
+
+        'queries' => [
+            'driver' => 'custom',
+            'via' => QueryLogChannel::class,
+            'level' => 'debug',
+        ],
     ],
 
 ];
